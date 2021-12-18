@@ -16,7 +16,14 @@ class MainViewModel: ViewModel() {
     }
 
     init {
-        collectFlow()
+//        collectFlow()
+        viewModelScope.launch {
+            sharedFlow.collect {
+                delay(2000L)
+                println("FLOW: The received number is $it")
+            }
+        }
+        squareNumber(3)
     }
 
     private fun collectFlow() {
@@ -45,5 +52,15 @@ class MainViewModel: ViewModel() {
 
     fun incrementCounter() {
         _stateFlow.value += 1
+    }
+
+    //Shared Flow
+    private val _sharedFlow = MutableSharedFlow<Int>(5)
+    val sharedFlow = _sharedFlow.asSharedFlow()
+
+    fun squareNumber(number: Int) {
+        viewModelScope.launch {
+            _sharedFlow.emit(number * number)
+        }
     }
 }
