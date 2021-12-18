@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -24,23 +25,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             KotlinFlowTheme {
                 val viewModel = viewModel<MainViewModel>()
-                val number = viewModel.countDownFlow.collectAsState(initial = 10)
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting(number)
+                val number = viewModel.stateFlow.collectAsState(initial = 0)
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Button(
+                        onClick = { viewModel.incrementCounter() }
+                    ) {
+                        Text("Counter: ${number.value}")
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(number: State<Int>) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = number.value.toString(),
-            fontSize = 34.sp,
-            modifier = Modifier.align(Alignment.Center)
-        )
     }
 }

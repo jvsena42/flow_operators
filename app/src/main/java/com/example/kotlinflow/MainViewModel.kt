@@ -25,6 +25,8 @@ class MainViewModel: ViewModel() {
                 println("The current time is $time")
             }
 
+            //Chanel operators
+
             // accumulator -> sum of previous values, value -> present result
            /* val reduceResult = countDownFlow.reduce { accumulator, value ->
                 accumulator + value
@@ -35,5 +37,13 @@ class MainViewModel: ViewModel() {
                 accumulator + value
             }*/
         }
+    }
+
+    //State Flow
+    private val _stateFlow = MutableStateFlow(0)
+    val stateFlow = _stateFlow.asStateFlow()
+
+    fun incrementCounter() {
+        _stateFlow.value += 1
     }
 }
